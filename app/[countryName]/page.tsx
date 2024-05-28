@@ -1,8 +1,15 @@
 import getACountry from "@/services/getACountry";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
+
+//  Types
+type MetaDataPropsType = {
+  params: { countryName: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 type SingleCountryPageType = {
   params: {
@@ -10,11 +17,28 @@ type SingleCountryPageType = {
   };
 };
 
+// Meta Data
+export async function generateMetadata({
+  params,
+  searchParams,
+}: MetaDataPropsType): Promise<Metadata> {
+  const countryName = decodeURIComponent(params.countryName);
+  const country = await getACountry(countryName);
+  const { flags, name } = country[0];
+  return {
+    title: name,
+    icons: {
+      icon: flags.svg,
+    },
+  };
+}
+
 export default async function SingleCountryPage({
   params,
 }: SingleCountryPageType) {
   const countryName = decodeURIComponent(params.countryName);
   const country = await getACountry(countryName);
+  console.log(country);
   const {
     borders,
     capital,
@@ -71,29 +95,34 @@ export default async function SingleCountryPage({
         <div className="flex flex-col gap-3">
           <div>
             <span className="font-bold">Top Level Domain : </span>
-            {topLevelDomain.map((domain, index) => (
+            {topLevelDomain?.map((domain, index) => (
               <span key={index}>{domain} , </span>
             ))}
           </div>
-          <div>
-            <span className="font-bold">Currency Name : </span>
-            <span>{currencies[0].name}</span>
-          </div>
-          <div>
-            <span className="font-bold">Currency Symbol : </span>
-            <span>{currencies[0].symbol}</span>
-          </div>
+          {!!currencies?.length && (
+            <>
+              <div>
+                <span className="font-bold">Currency Name : </span>
+                <span>{currencies[0].name}</span>
+              </div>
+              <div>
+                <span className="font-bold">Currency Symbol : </span>
+                <span>{currencies[0]?.symbol}</span>
+              </div>
+            </>
+          )}
+
           <div>
             <span className="font-bold">Languages : </span>
-            {languages.map((language, index) => (
+            {languages?.map((language, index) => (
               <span key={index}>{language.name} , </span>
             ))}
           </div>
         </div>
         {!!borders?.length && (
-          <div className="flex flex-col gap-5 md:flex-row md:col-span-2 md:items-center">
+          <div className="flex flex-col gap-5 md:flex-row md:col-span-2 md:items-start">
             <span className="font-bold">Border Countries : </span>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap md:max-w-96">
               {borders?.map((border, index) => (
                 <span
                   key={index}

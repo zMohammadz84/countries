@@ -1,4 +1,11 @@
 import CountriesList from "@/components/ui/CountriesList";
+import { Metadata } from "next";
+
+// Meta Tags
+export const metadata: Metadata = {
+  title: "Countries List",
+  description: "List of all countries with their information",
+};
 
 type HomePageType = {
   searchParams: {
