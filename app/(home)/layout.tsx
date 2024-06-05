@@ -1,6 +1,6 @@
 import FilterSelect, {
   FilterSelectSkeleton,
-} from "@/components/modules/FilterSelect";
+} from "@/components/ui/FilterSelect";
 import SearchBox, { SearchBoxSkeleton } from "@/components/ui/SearchBox";
 import React, { ReactNode, Suspense } from "react";
 

@@ -1,3 +1,4 @@
+import BackButton from "@/components/ui/BackButton";
 import getACountry from "@/services/getACountry";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -56,14 +57,7 @@ export default async function SingleCountryPage({
   return (
     <section className="grid grid-cols-1 gap-10 my-10 lg:grid-cols-2">
       <div className="lg:col-span-2">
-        <Link
-          className="flex justify-center items-center gap-3 bg-custom-primary-color rounded-md w-24 px-4 py-2 shadow-md"
-          href="/"
-          scroll={false}
-        >
-          <FaArrowLeftLong />
-          <span>Back</span>
-        </Link>
+        <BackButton />
       </div>
       <div>
         <Image src={flags.svg} alt={name} height={250} width={500} />
